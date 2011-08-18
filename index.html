@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Canvas Experimenting</title>
+
+    <style type="text/css">
+      #myCnvs { border: 1px solid red; }
+    </style>
+  </head>
+  <body>
+    <h1>Canvas Experimenting</h1>
+    <canvas id="myCnvs" height="300" width="500">
+      <p>Oops, HTML drawing isn't supported in your browser!</p>
+    </canvas>
+
+
+    <script type="text/javascript">
+
+      CanvasRenderingContext2D.prototype.centerCoords = function () {
+        var canvas = this.canvas,
+        center = [canvas.width/2, canvas.height/2];
+
+        return center;
+      }
+
+      CanvasRenderingContext2D.prototype.drawCenterRect = function (w, h) {
+        var center = this.centerCoords();  
+        this.strokeRect(center[0]-w/2, center[1]-h/2, w, h);
+        return this;
+      };
+
+      CanvasRenderingContext2D.prototype.goToCenter = function () {
+        var center = this.centerCoords();
+        this.moveTo(center[0], center[1]);
+        return this;
+      }
+
+
+
+      var cnvs = document.getElementById("myCnvs"),
+      context,
+      deck = [300,150],
+      center;
+
+      if (cnvs && cnvs.getContext) {
+
+        context = cnvs.getContext("2d");
+
+
+        if (context) {
+          center = context.centerCoords();
+          context.strokeStyle = "#00f";
+          context.lineWidth = 1;
+          context.drawCenterRect(deck[0], deck[1]);
+
+          context.beginPath();
+          context.strokeStyle = "green";
+          context.goToCenter();
+          context.lineTo(center[0], center[1] - deck[1]/2);
+          context.fill();
+          context.stroke();
+          context.closePath();
+
+
+
+        }
+      }
+
+    </script>
+  </body>
+</html>
