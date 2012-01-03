@@ -2,8 +2,8 @@
  * The Plot module provides 2D, plotter-style helper methods for canvas drawing.
  * Canvas seems to reference every action in relation to the context's x/y origin -- 
  * this can be tedious when attempting to draw polygons, so Plot allows actions to be
- * referenced from the last-drawed coordinates.  The idea is:  "move to point A, draw
- * a line to point B, draw an arc to point C, now draw a line to point D" and so on...
+ * sequentially referenced from the last-drawn coordinates.  The idea is:  "Move to Point A, draw
+ * a line to Point B, draw an arc to Point C, now draw a line to Point D" and so on...
  *
  * @module plot
  *
@@ -327,8 +327,10 @@ Plot.prototype = {
      * @return {Object} Returns the Plot instance for chaining.
      */
     centerRect: function (w, h) {
-      var center = this.getCenter();  
+      var center = this.getCenter();
 
+      h = h || w;
+      
       this.context.strokeRect(center.x-w/2, center.y-h/2, w, h);
       return this;
     },
@@ -409,15 +411,15 @@ Plot.prototype = {
      */
     end: function (closePath) {
       this.context.stroke();
-	    
+
       if (closePath) {
-	this.context.closePath();
+        this.context.closePath();
       }
       
       if (this.isDrawing) {
-	this.isDrawing = false;
+        this.isDrawing = false;
       }
-	    
+      
       return this;
     },
     
